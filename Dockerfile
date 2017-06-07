@@ -1,11 +1,12 @@
-FROM mongo:latest
+FROM alpine:edge
 
-MAINTAINER Andrey Degtyaruk <hlogeon1@gmail.com>
+RUN \
+apk add --no-cache mongodb && \
+rm /usr/bin/mongoperf
 
-CMD mkdir /data/db
+VOLUME /data/db
+EXPOSE 27017 28017
 
-VOLUME /data
-
-CMD ["mongod"]
-
-EXPOSE 27017
+COPY run.sh /root
+ENTRYPOINT [ "/root/run.sh" ]
+CMD [ "mongod" ]
